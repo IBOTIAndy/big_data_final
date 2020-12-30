@@ -2,7 +2,7 @@
 import requests #抓取網頁的套件
 import pandas as pd #分析資料的套件
 # 建立一個縣市的list
-city = ['台北市', '新北市']
+city = ['新北市']
 #city = ['基隆市', '台北市', '新北市', '桃園市', '新竹市','新竹縣','苗栗縣','台中市','彰化縣', '雲林縣', '南投縣', '嘉義縣', '嘉義市', '台南市', '高雄市', '屏東縣', '台東縣', '花蓮縣', '宜蘭縣', '連江縣', '金門縣', '澎湖縣']
 
 #使用迴圈依序取得每一個城市的門市資訊， enumerate(city) 產生[0, 基隆市] [1, 台北市][2, 新北市][3, 桃園市]
@@ -33,6 +33,7 @@ df_7_11_store.to_excel('7_11.xlsx', encoding="UTF-8", index=False)
 
 #已將各縣市的7-11放入execl
 dicfile = pd.read_excel('7_11.xlsx') #開啟已經儲存的execl
+realrow, realcol = dicfile.shape
 k=0
 table = []
 table2 = []
@@ -162,46 +163,6 @@ pd_table = pd_table.sort_values(by='n', ascending=False) #降序
 pd_table = pd_table.reset_index(drop=True) #整理index
 print(pd_table)
 pd_table.to_csv('sorted_7_11.csv', encoding="UTF-8", index=False)
-
-'''
-#for i in table:
-#    print("city: %s road: %s have %s 7-11" %(i["city"], i["road_ja"], i["n"]))
-#路
-pd_table = pd.DataFrame(columns=["city", "road_ja", "n"], data=table)
-pd_table = pd_table.sort_values(by='n', ascending=False) #降序
-pd_table = pd_table.reset_index(drop=True) #整理index
-print(pd_table)
-pd_table.to_csv('路_7_11.csv', encoding="UTF-8", index=False)
-#街
-pd_table = pd.DataFrame(columns=["city", "road_ja", "n"], data=table2)
-pd_table = pd_table.sort_values(by='n', ascending=False) #降序
-pd_table = pd_table.reset_index(drop=True) #整理index
-print(pd_table)
-pd_table.to_csv('街_7_11.csv', encoding="UTF-8", index=False)
-''
-n = 30
-#路
-print("top%d 路:" %n)
-for i in range(1, n+1):
-    bigN=0
-    flag={}
-    for j in table:
-        if bigN < j['n']:
-            bigN = j['n']
-            flag = j
-    print("%d. %s%s有 %d 間7-11" %(i, flag['city'], flag['road'], flag['n']))
-    table.remove(flag)
-print("\n")
-
-#街
-print("top%d 街:" %n)
-for i in range(1, n+1):
-    bigN=0
-    flag={}
-    for j in table2:
-        if bigN < j['n']:
-            bigN = j['n']
-            flag = j
-    print("%d. %s%s有 %d 間7-11" %(i, flag['city'], flag['ja'], flag['n']))
-    table2.remove(flag)
-'''
+cutrow, cutcol = pd_table.shape
+print(realrow, cutrow)
+print("成功率：%.2f％" %((cutrow/realrow)*100))
